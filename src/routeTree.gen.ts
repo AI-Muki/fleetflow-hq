@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppDriversRouteImport } from './routes/_app/drivers'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppDamageReportsRouteImport } from './routes/_app/damage-reports'
+import { Route as AppAssignmentsRouteImport } from './routes/_app/assignments'
 import { Route as AppAssetsIndexRouteImport } from './routes/_app/assets.index'
 import { Route as AppAssetsIdRouteImport } from './routes/_app/assets.$id'
 
@@ -30,9 +33,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppDriversRoute = AppDriversRouteImport.update({
+  id: '/drivers',
+  path: '/drivers',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDamageReportsRoute = AppDamageReportsRouteImport.update({
+  id: '/damage-reports',
+  path: '/damage-reports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssignmentsRoute = AppAssignmentsRouteImport.update({
+  id: '/assignments',
+  path: '/assignments',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAssetsIndexRoute = AppAssetsIndexRouteImport.update({
@@ -49,14 +67,20 @@ const AppAssetsIdRoute = AppAssetsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/assignments': typeof AppAssignmentsRoute
+  '/damage-reports': typeof AppDamageReportsRoute
   '/dashboard': typeof AppDashboardRoute
+  '/drivers': typeof AppDriversRoute
   '/assets/$id': typeof AppAssetsIdRoute
   '/assets/': typeof AppAssetsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/assignments': typeof AppAssignmentsRoute
+  '/damage-reports': typeof AppDamageReportsRoute
   '/dashboard': typeof AppDashboardRoute
+  '/drivers': typeof AppDriversRoute
   '/assets/$id': typeof AppAssetsIdRoute
   '/assets': typeof AppAssetsIndexRoute
 }
@@ -65,21 +89,43 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_app/assignments': typeof AppAssignmentsRoute
+  '/_app/damage-reports': typeof AppDamageReportsRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/drivers': typeof AppDriversRoute
   '/_app/assets/$id': typeof AppAssetsIdRoute
   '/_app/assets/': typeof AppAssetsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/assets/$id' | '/assets/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/assignments'
+    | '/damage-reports'
+    | '/dashboard'
+    | '/drivers'
+    | '/assets/$id'
+    | '/assets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/assets/$id' | '/assets'
+  to:
+    | '/'
+    | '/auth'
+    | '/assignments'
+    | '/damage-reports'
+    | '/dashboard'
+    | '/drivers'
+    | '/assets/$id'
+    | '/assets'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/auth'
+    | '/_app/assignments'
+    | '/_app/damage-reports'
     | '/_app/dashboard'
+    | '/_app/drivers'
     | '/_app/assets/$id'
     | '/_app/assets/'
   fileRoutesById: FileRoutesById
@@ -113,11 +159,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/drivers': {
+      id: '/_app/drivers'
+      path: '/drivers'
+      fullPath: '/drivers'
+      preLoaderRoute: typeof AppDriversRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/damage-reports': {
+      id: '/_app/damage-reports'
+      path: '/damage-reports'
+      fullPath: '/damage-reports'
+      preLoaderRoute: typeof AppDamageReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/assignments': {
+      id: '/_app/assignments'
+      path: '/assignments'
+      fullPath: '/assignments'
+      preLoaderRoute: typeof AppAssignmentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/assets/': {
@@ -138,13 +205,19 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAssignmentsRoute: typeof AppAssignmentsRoute
+  AppDamageReportsRoute: typeof AppDamageReportsRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDriversRoute: typeof AppDriversRoute
   AppAssetsIdRoute: typeof AppAssetsIdRoute
   AppAssetsIndexRoute: typeof AppAssetsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAssignmentsRoute: AppAssignmentsRoute,
+  AppDamageReportsRoute: AppDamageReportsRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppDriversRoute: AppDriversRoute,
   AppAssetsIdRoute: AppAssetsIdRoute,
   AppAssetsIndexRoute: AppAssetsIndexRoute,
 }

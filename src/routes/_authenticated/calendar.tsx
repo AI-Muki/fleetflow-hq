@@ -61,9 +61,40 @@ function CalendarPage() {
             </div>
           </Card>
           <UpcomingList />
-
         </div>
       </PageBody>
     </>
   );
 }
+
+function UpcomingList() {
+  const { data: docs = [] } = useDocuments();
+  const { data: maint = [] } = useMaintenance();
+  const now = new Date();
+  const items = [
+    ...docs.filter((d: any) => d.expiry_date && new Date(d.expiry_date) >= now).map((d: any) => ({ type: d.kind, target: d.name ?? d.asset?.name ?? "—", when: d.expiry_date })),
+    ...maint.filter((m: any) => m.scheduled_date && new Date(m.scheduled_date) >= now && m.status !== "completed").map((m: any) => ({ type: "service", target: m.asset?.name ?? "vehicle", when: m.scheduled_date })),
+  ].sort((a, b) => new Date(a.when).getTime() - new Date(b.when).getTime()).slice(0, 10);
+
+  return (
+    <Card className="p-4">
+      <h3 className="text-sm font-semibold">Upcoming</h3>
+      {items.length === 0 ? (
+        <p className="mt-4 text-xs text-muted-foreground">No upcoming events.</p>
+      ) : (
+        <ul className="mt-3 divide-y">
+          {items.map((a, i) => (
+            <li key={i} className="py-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <Badge variant="outline">{a.type}</Badge>
+                <span className="text-xs text-muted-foreground">{a.when}</span>
+              </div>
+              <div className="mt-1 text-sm truncate">{a.target}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
+  );
+}
+

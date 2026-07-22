@@ -11,7 +11,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
-export const Route = createFileRoute("/_app/assets")({
+export const Route = createFileRoute("/_app/assets/")({
   head: () => ({
     meta: [{ title: "Assets — FleetFlow" }, { name: "description", content: "All company vehicles and equipment." }],
   }),

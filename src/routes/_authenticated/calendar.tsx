@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { upcomingAlerts } from "@/lib/mock-data";
+import { useDocuments, useMaintenance } from "@/lib/fleet-queries";
 
 export const Route = createFileRoute("/_authenticated/calendar")({
   head: () => ({ meta: [{ title: "Calendar — FleetFlow" }] }),
@@ -60,20 +60,8 @@ function CalendarPage() {
               })}
             </div>
           </Card>
-          <Card className="p-4">
-            <h3 className="text-sm font-semibold">Upcoming</h3>
-            <ul className="mt-3 divide-y">
-              {upcomingAlerts.map((a,i)=>(
-                <li key={i} className="py-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <Badge variant="outline">{a.type}</Badge>
-                    <span className="text-xs text-muted-foreground">{a.when}</span>
-                  </div>
-                  <div className="mt-1 text-sm truncate">{a.target}</div>
-                </li>
-              ))}
-            </ul>
-          </Card>
+          <UpcomingList />
+
         </div>
       </PageBody>
     </>

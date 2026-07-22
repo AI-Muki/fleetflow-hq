@@ -60,14 +60,14 @@ function Dashboard() {
     for (const m of maintenance) {
       if (m.status === "completed" || !m.scheduled_date) continue;
       const dt = new Date(m.scheduled_date);
-      if (dt < now) tasks.push({ text: `Overdue: ${m.maintenance_type ?? "service"} on ${m.asset?.name ?? "vehicle"}`, severity: "danger" });
+      if (dt < now) tasks.push({ text: `Overdue: ${(m as any).type ?? "service"} on ${m.asset?.name ?? "vehicle"}`, severity: "danger" });
       else if (dt <= in7) tasks.push({ text: `Upcoming service: ${m.asset?.name ?? "vehicle"} on ${m.scheduled_date}`, severity: "warning" });
     }
     for (const d of docs) {
       if (!d.expiry_date) continue;
       const dt = new Date(d.expiry_date);
-      if (dt < now) tasks.push({ text: `Expired: ${d.name ?? d.category} on ${d.asset?.name ?? d.driver?.full_name ?? "record"}`, severity: "danger" });
-      else if (dt <= in7) tasks.push({ text: `Expiring soon: ${d.name ?? d.category} (${d.expiry_date})`, severity: "warning" });
+      if (dt < now) tasks.push({ text: `Expired: ${d.name ?? d.kind} on ${d.asset?.name ?? d.driver?.full_name ?? "record"}`, severity: "danger" });
+      else if (dt <= in7) tasks.push({ text: `Expiring soon: ${d.name ?? d.kind} (${d.expiry_date})`, severity: "warning" });
     }
     return tasks.slice(0, 6);
   }, [maintenance, docs]);

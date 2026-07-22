@@ -48,7 +48,7 @@ function MaintPage() {
                         <span>{j.asset?.name} · {j.asset?.plate}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">{j.maintenance_type ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{j.type ?? "—"}</td>
                     <td className="px-4 py-3 tabular-nums">{j.scheduled_date ?? "—"}</td>
                     <td className="px-4 py-3"><Badge variant="outline">{j.status ?? "scheduled"}</Badge></td>
                     <td className="px-4 py-3 text-right tabular-nums">{j.cost ? `€${Number(j.cost).toLocaleString()}` : "—"}</td>

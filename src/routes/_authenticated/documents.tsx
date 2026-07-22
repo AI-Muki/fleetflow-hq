@@ -46,10 +46,10 @@ function DocsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">{d.name ?? d.file_name ?? "Document"}</span>
+                        <span className="font-medium">{d.name ?? "Document"}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground">{d.category ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{d.kind ?? "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {d.asset?.name ? `${d.asset.name}` : d.driver?.full_name ?? "—"}
                     </td>

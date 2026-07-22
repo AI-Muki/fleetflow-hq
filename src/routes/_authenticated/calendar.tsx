@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { upcomingAlerts } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/_app/calendar")({
+export const Route = createFileRoute("/_authenticated/calendar")({
   head: () => ({ meta: [{ title: "Calendar — FleetFlow" }] }),
   component: CalendarPage,
 });

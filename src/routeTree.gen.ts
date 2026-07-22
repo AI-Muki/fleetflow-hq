@@ -12,9 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppReportsRouteImport } from './routes/_app/reports'
+import { Route as AppMaintenanceRouteImport } from './routes/_app/maintenance'
+import { Route as AppFuelRouteImport } from './routes/_app/fuel'
+import { Route as AppExpensesRouteImport } from './routes/_app/expenses'
 import { Route as AppDriversRouteImport } from './routes/_app/drivers'
+import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppDamageReportsRouteImport } from './routes/_app/damage-reports'
+import { Route as AppCalendarRouteImport } from './routes/_app/calendar'
 import { Route as AppAssignmentsRouteImport } from './routes/_app/assignments'
 import { Route as AppAssetsIndexRouteImport } from './routes/_app/assets.index'
 import { Route as AppAssetsIdRouteImport } from './routes/_app/assets.$id'
@@ -33,9 +40,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMaintenanceRoute = AppMaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFuelRoute = AppFuelRouteImport.update({
+  id: '/fuel',
+  path: '/fuel',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppExpensesRoute = AppExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDriversRoute = AppDriversRouteImport.update({
   id: '/drivers',
   path: '/drivers',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDocumentsRoute = AppDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -46,6 +83,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
 const AppDamageReportsRoute = AppDamageReportsRouteImport.update({
   id: '/damage-reports',
   path: '/damage-reports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCalendarRoute = AppCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAssignmentsRoute = AppAssignmentsRouteImport.update({
@@ -68,9 +110,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/assignments': typeof AppAssignmentsRoute
+  '/calendar': typeof AppCalendarRoute
   '/damage-reports': typeof AppDamageReportsRoute
   '/dashboard': typeof AppDashboardRoute
+  '/documents': typeof AppDocumentsRoute
   '/drivers': typeof AppDriversRoute
+  '/expenses': typeof AppExpensesRoute
+  '/fuel': typeof AppFuelRoute
+  '/maintenance': typeof AppMaintenanceRoute
+  '/reports': typeof AppReportsRoute
+  '/settings': typeof AppSettingsRoute
   '/assets/$id': typeof AppAssetsIdRoute
   '/assets/': typeof AppAssetsIndexRoute
 }
@@ -78,9 +127,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/assignments': typeof AppAssignmentsRoute
+  '/calendar': typeof AppCalendarRoute
   '/damage-reports': typeof AppDamageReportsRoute
   '/dashboard': typeof AppDashboardRoute
+  '/documents': typeof AppDocumentsRoute
   '/drivers': typeof AppDriversRoute
+  '/expenses': typeof AppExpensesRoute
+  '/fuel': typeof AppFuelRoute
+  '/maintenance': typeof AppMaintenanceRoute
+  '/reports': typeof AppReportsRoute
+  '/settings': typeof AppSettingsRoute
   '/assets/$id': typeof AppAssetsIdRoute
   '/assets': typeof AppAssetsIndexRoute
 }
@@ -90,9 +146,16 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/_app/assignments': typeof AppAssignmentsRoute
+  '/_app/calendar': typeof AppCalendarRoute
   '/_app/damage-reports': typeof AppDamageReportsRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/documents': typeof AppDocumentsRoute
   '/_app/drivers': typeof AppDriversRoute
+  '/_app/expenses': typeof AppExpensesRoute
+  '/_app/fuel': typeof AppFuelRoute
+  '/_app/maintenance': typeof AppMaintenanceRoute
+  '/_app/reports': typeof AppReportsRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_app/assets/$id': typeof AppAssetsIdRoute
   '/_app/assets/': typeof AppAssetsIndexRoute
 }
@@ -102,9 +165,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/assignments'
+    | '/calendar'
     | '/damage-reports'
     | '/dashboard'
+    | '/documents'
     | '/drivers'
+    | '/expenses'
+    | '/fuel'
+    | '/maintenance'
+    | '/reports'
+    | '/settings'
     | '/assets/$id'
     | '/assets/'
   fileRoutesByTo: FileRoutesByTo
@@ -112,9 +182,16 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/assignments'
+    | '/calendar'
     | '/damage-reports'
     | '/dashboard'
+    | '/documents'
     | '/drivers'
+    | '/expenses'
+    | '/fuel'
+    | '/maintenance'
+    | '/reports'
+    | '/settings'
     | '/assets/$id'
     | '/assets'
   id:
@@ -123,9 +200,16 @@ export interface FileRouteTypes {
     | '/_app'
     | '/auth'
     | '/_app/assignments'
+    | '/_app/calendar'
     | '/_app/damage-reports'
     | '/_app/dashboard'
+    | '/_app/documents'
     | '/_app/drivers'
+    | '/_app/expenses'
+    | '/_app/fuel'
+    | '/_app/maintenance'
+    | '/_app/reports'
+    | '/_app/settings'
     | '/_app/assets/$id'
     | '/_app/assets/'
   fileRoutesById: FileRoutesById
@@ -159,11 +243,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/reports': {
+      id: '/_app/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/maintenance': {
+      id: '/_app/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof AppMaintenanceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/fuel': {
+      id: '/_app/fuel'
+      path: '/fuel'
+      fullPath: '/fuel'
+      preLoaderRoute: typeof AppFuelRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/expenses': {
+      id: '/_app/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof AppExpensesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/drivers': {
       id: '/_app/drivers'
       path: '/drivers'
       fullPath: '/drivers'
       preLoaderRoute: typeof AppDriversRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/documents': {
+      id: '/_app/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof AppDocumentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -178,6 +304,13 @@ declare module '@tanstack/react-router' {
       path: '/damage-reports'
       fullPath: '/damage-reports'
       preLoaderRoute: typeof AppDamageReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/calendar': {
+      id: '/_app/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AppCalendarRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/assignments': {
@@ -206,18 +339,32 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAssignmentsRoute: typeof AppAssignmentsRoute
+  AppCalendarRoute: typeof AppCalendarRoute
   AppDamageReportsRoute: typeof AppDamageReportsRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDocumentsRoute: typeof AppDocumentsRoute
   AppDriversRoute: typeof AppDriversRoute
+  AppExpensesRoute: typeof AppExpensesRoute
+  AppFuelRoute: typeof AppFuelRoute
+  AppMaintenanceRoute: typeof AppMaintenanceRoute
+  AppReportsRoute: typeof AppReportsRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppAssetsIdRoute: typeof AppAssetsIdRoute
   AppAssetsIndexRoute: typeof AppAssetsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAssignmentsRoute: AppAssignmentsRoute,
+  AppCalendarRoute: AppCalendarRoute,
   AppDamageReportsRoute: AppDamageReportsRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppDocumentsRoute: AppDocumentsRoute,
   AppDriversRoute: AppDriversRoute,
+  AppExpensesRoute: AppExpensesRoute,
+  AppFuelRoute: AppFuelRoute,
+  AppMaintenanceRoute: AppMaintenanceRoute,
+  AppReportsRoute: AppReportsRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppAssetsIdRoute: AppAssetsIdRoute,
   AppAssetsIndexRoute: AppAssetsIndexRoute,
 }

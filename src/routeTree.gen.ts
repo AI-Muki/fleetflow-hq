@@ -10,29 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AppRouteImport } from './routes/_app'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppReportsRouteImport } from './routes/_app/reports'
-import { Route as AppMaintenanceRouteImport } from './routes/_app/maintenance'
-import { Route as AppFuelRouteImport } from './routes/_app/fuel'
-import { Route as AppExpensesRouteImport } from './routes/_app/expenses'
-import { Route as AppDriversRouteImport } from './routes/_app/drivers'
-import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
-import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
-import { Route as AppDamageReportsRouteImport } from './routes/_app/damage-reports'
-import { Route as AppCalendarRouteImport } from './routes/_app/calendar'
-import { Route as AppAssignmentsRouteImport } from './routes/_app/assignments'
-import { Route as AppAssetsIndexRouteImport } from './routes/_app/assets.index'
-import { Route as AppAssetsIdRouteImport } from './routes/_app/assets.$id'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedMaintenanceRouteImport } from './routes/_authenticated/maintenance'
+import { Route as AuthenticatedFuelRouteImport } from './routes/_authenticated/fuel'
+import { Route as AuthenticatedExpensesRouteImport } from './routes/_authenticated/expenses'
+import { Route as AuthenticatedDriversRouteImport } from './routes/_authenticated/drivers'
+import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDamageReportsRouteImport } from './routes/_authenticated/damage-reports'
+import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
+import { Route as AuthenticatedAssignmentsRouteImport } from './routes/_authenticated/assignments'
+import { Route as AuthenticatedAssetsIndexRouteImport } from './routes/_authenticated/assets.index'
+import { Route as AuthenticatedAssetsIdRouteImport } from './routes/_authenticated/assets.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,124 +40,128 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppSettingsRoute = AppSettingsRouteImport.update({
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppReportsRoute = AppReportsRouteImport.update({
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppMaintenanceRoute = AppMaintenanceRouteImport.update({
-  id: '/maintenance',
-  path: '/maintenance',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppFuelRoute = AppFuelRouteImport.update({
+const AuthenticatedMaintenanceRoute =
+  AuthenticatedMaintenanceRouteImport.update({
+    id: '/maintenance',
+    path: '/maintenance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFuelRoute = AuthenticatedFuelRouteImport.update({
   id: '/fuel',
   path: '/fuel',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppExpensesRoute = AppExpensesRouteImport.update({
+const AuthenticatedExpensesRoute = AuthenticatedExpensesRouteImport.update({
   id: '/expenses',
   path: '/expenses',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppDriversRoute = AppDriversRouteImport.update({
+const AuthenticatedDriversRoute = AuthenticatedDriversRouteImport.update({
   id: '/drivers',
   path: '/drivers',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppDocumentsRoute = AppDocumentsRouteImport.update({
+const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppDamageReportsRoute = AppDamageReportsRouteImport.update({
-  id: '/damage-reports',
-  path: '/damage-reports',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppCalendarRoute = AppCalendarRouteImport.update({
+const AuthenticatedDamageReportsRoute =
+  AuthenticatedDamageReportsRouteImport.update({
+    id: '/damage-reports',
+    path: '/damage-reports',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AppAssignmentsRoute = AppAssignmentsRouteImport.update({
-  id: '/assignments',
-  path: '/assignments',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppAssetsIndexRoute = AppAssetsIndexRouteImport.update({
-  id: '/assets/',
-  path: '/assets/',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppAssetsIdRoute = AppAssetsIdRouteImport.update({
+const AuthenticatedAssignmentsRoute =
+  AuthenticatedAssignmentsRouteImport.update({
+    id: '/assignments',
+    path: '/assignments',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAssetsIndexRoute =
+  AuthenticatedAssetsIndexRouteImport.update({
+    id: '/assets/',
+    path: '/assets/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAssetsIdRoute = AuthenticatedAssetsIdRouteImport.update({
   id: '/assets/$id',
   path: '/assets/$id',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/assignments': typeof AppAssignmentsRoute
-  '/calendar': typeof AppCalendarRoute
-  '/damage-reports': typeof AppDamageReportsRoute
-  '/dashboard': typeof AppDashboardRoute
-  '/documents': typeof AppDocumentsRoute
-  '/drivers': typeof AppDriversRoute
-  '/expenses': typeof AppExpensesRoute
-  '/fuel': typeof AppFuelRoute
-  '/maintenance': typeof AppMaintenanceRoute
-  '/reports': typeof AppReportsRoute
-  '/settings': typeof AppSettingsRoute
-  '/assets/$id': typeof AppAssetsIdRoute
-  '/assets/': typeof AppAssetsIndexRoute
+  '/assignments': typeof AuthenticatedAssignmentsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
+  '/damage-reports': typeof AuthenticatedDamageReportsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/documents': typeof AuthenticatedDocumentsRoute
+  '/drivers': typeof AuthenticatedDriversRoute
+  '/expenses': typeof AuthenticatedExpensesRoute
+  '/fuel': typeof AuthenticatedFuelRoute
+  '/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/assets/$id': typeof AuthenticatedAssetsIdRoute
+  '/assets/': typeof AuthenticatedAssetsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/assignments': typeof AppAssignmentsRoute
-  '/calendar': typeof AppCalendarRoute
-  '/damage-reports': typeof AppDamageReportsRoute
-  '/dashboard': typeof AppDashboardRoute
-  '/documents': typeof AppDocumentsRoute
-  '/drivers': typeof AppDriversRoute
-  '/expenses': typeof AppExpensesRoute
-  '/fuel': typeof AppFuelRoute
-  '/maintenance': typeof AppMaintenanceRoute
-  '/reports': typeof AppReportsRoute
-  '/settings': typeof AppSettingsRoute
-  '/assets/$id': typeof AppAssetsIdRoute
-  '/assets': typeof AppAssetsIndexRoute
+  '/assignments': typeof AuthenticatedAssignmentsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
+  '/damage-reports': typeof AuthenticatedDamageReportsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/documents': typeof AuthenticatedDocumentsRoute
+  '/drivers': typeof AuthenticatedDriversRoute
+  '/expenses': typeof AuthenticatedExpensesRoute
+  '/fuel': typeof AuthenticatedFuelRoute
+  '/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/assets/$id': typeof AuthenticatedAssetsIdRoute
+  '/assets': typeof AuthenticatedAssetsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_app': typeof AppRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_app/assignments': typeof AppAssignmentsRoute
-  '/_app/calendar': typeof AppCalendarRoute
-  '/_app/damage-reports': typeof AppDamageReportsRoute
-  '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/documents': typeof AppDocumentsRoute
-  '/_app/drivers': typeof AppDriversRoute
-  '/_app/expenses': typeof AppExpensesRoute
-  '/_app/fuel': typeof AppFuelRoute
-  '/_app/maintenance': typeof AppMaintenanceRoute
-  '/_app/reports': typeof AppReportsRoute
-  '/_app/settings': typeof AppSettingsRoute
-  '/_app/assets/$id': typeof AppAssetsIdRoute
-  '/_app/assets/': typeof AppAssetsIndexRoute
+  '/_authenticated/assignments': typeof AuthenticatedAssignmentsRoute
+  '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
+  '/_authenticated/damage-reports': typeof AuthenticatedDamageReportsRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
+  '/_authenticated/drivers': typeof AuthenticatedDriversRoute
+  '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
+  '/_authenticated/fuel': typeof AuthenticatedFuelRoute
+  '/_authenticated/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/assets/$id': typeof AuthenticatedAssetsIdRoute
+  '/_authenticated/assets/': typeof AuthenticatedAssetsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,26 +201,26 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_app'
+    | '/_authenticated'
     | '/auth'
-    | '/_app/assignments'
-    | '/_app/calendar'
-    | '/_app/damage-reports'
-    | '/_app/dashboard'
-    | '/_app/documents'
-    | '/_app/drivers'
-    | '/_app/expenses'
-    | '/_app/fuel'
-    | '/_app/maintenance'
-    | '/_app/reports'
-    | '/_app/settings'
-    | '/_app/assets/$id'
-    | '/_app/assets/'
+    | '/_authenticated/assignments'
+    | '/_authenticated/calendar'
+    | '/_authenticated/damage-reports'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/documents'
+    | '/_authenticated/drivers'
+    | '/_authenticated/expenses'
+    | '/_authenticated/fuel'
+    | '/_authenticated/maintenance'
+    | '/_authenticated/reports'
+    | '/_authenticated/settings'
+    | '/_authenticated/assets/$id'
+    | '/_authenticated/assets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
 }
 
@@ -229,11 +233,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app': {
-      id: '/_app'
+    '/_authenticated': {
+      id: '/_authenticated'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AppRouteImport
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -243,137 +247,138 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/settings': {
-      id: '/_app/settings'
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof AppSettingsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/reports': {
-      id: '/_app/reports'
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
       path: '/reports'
       fullPath: '/reports'
-      preLoaderRoute: typeof AppReportsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/maintenance': {
-      id: '/_app/maintenance'
+    '/_authenticated/maintenance': {
+      id: '/_authenticated/maintenance'
       path: '/maintenance'
       fullPath: '/maintenance'
-      preLoaderRoute: typeof AppMaintenanceRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedMaintenanceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/fuel': {
-      id: '/_app/fuel'
+    '/_authenticated/fuel': {
+      id: '/_authenticated/fuel'
       path: '/fuel'
       fullPath: '/fuel'
-      preLoaderRoute: typeof AppFuelRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedFuelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/expenses': {
-      id: '/_app/expenses'
+    '/_authenticated/expenses': {
+      id: '/_authenticated/expenses'
       path: '/expenses'
       fullPath: '/expenses'
-      preLoaderRoute: typeof AppExpensesRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedExpensesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/drivers': {
-      id: '/_app/drivers'
+    '/_authenticated/drivers': {
+      id: '/_authenticated/drivers'
       path: '/drivers'
       fullPath: '/drivers'
-      preLoaderRoute: typeof AppDriversRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedDriversRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/documents': {
-      id: '/_app/documents'
+    '/_authenticated/documents': {
+      id: '/_authenticated/documents'
       path: '/documents'
       fullPath: '/documents'
-      preLoaderRoute: typeof AppDocumentsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/damage-reports': {
-      id: '/_app/damage-reports'
+    '/_authenticated/damage-reports': {
+      id: '/_authenticated/damage-reports'
       path: '/damage-reports'
       fullPath: '/damage-reports'
-      preLoaderRoute: typeof AppDamageReportsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedDamageReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/calendar': {
-      id: '/_app/calendar'
+    '/_authenticated/calendar': {
+      id: '/_authenticated/calendar'
       path: '/calendar'
       fullPath: '/calendar'
-      preLoaderRoute: typeof AppCalendarRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedCalendarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/assignments': {
-      id: '/_app/assignments'
+    '/_authenticated/assignments': {
+      id: '/_authenticated/assignments'
       path: '/assignments'
       fullPath: '/assignments'
-      preLoaderRoute: typeof AppAssignmentsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAssignmentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/assets/': {
-      id: '/_app/assets/'
+    '/_authenticated/assets/': {
+      id: '/_authenticated/assets/'
       path: '/assets'
       fullPath: '/assets/'
-      preLoaderRoute: typeof AppAssetsIndexRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAssetsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_app/assets/$id': {
-      id: '/_app/assets/$id'
+    '/_authenticated/assets/$id': {
+      id: '/_authenticated/assets/$id'
       path: '/assets/$id'
       fullPath: '/assets/$id'
-      preLoaderRoute: typeof AppAssetsIdRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAssetsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AppRouteChildren {
-  AppAssignmentsRoute: typeof AppAssignmentsRoute
-  AppCalendarRoute: typeof AppCalendarRoute
-  AppDamageReportsRoute: typeof AppDamageReportsRoute
-  AppDashboardRoute: typeof AppDashboardRoute
-  AppDocumentsRoute: typeof AppDocumentsRoute
-  AppDriversRoute: typeof AppDriversRoute
-  AppExpensesRoute: typeof AppExpensesRoute
-  AppFuelRoute: typeof AppFuelRoute
-  AppMaintenanceRoute: typeof AppMaintenanceRoute
-  AppReportsRoute: typeof AppReportsRoute
-  AppSettingsRoute: typeof AppSettingsRoute
-  AppAssetsIdRoute: typeof AppAssetsIdRoute
-  AppAssetsIndexRoute: typeof AppAssetsIndexRoute
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAssignmentsRoute: typeof AuthenticatedAssignmentsRoute
+  AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
+  AuthenticatedDamageReportsRoute: typeof AuthenticatedDamageReportsRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
+  AuthenticatedDriversRoute: typeof AuthenticatedDriversRoute
+  AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
+  AuthenticatedFuelRoute: typeof AuthenticatedFuelRoute
+  AuthenticatedMaintenanceRoute: typeof AuthenticatedMaintenanceRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedAssetsIdRoute: typeof AuthenticatedAssetsIdRoute
+  AuthenticatedAssetsIndexRoute: typeof AuthenticatedAssetsIndexRoute
 }
 
-const AppRouteChildren: AppRouteChildren = {
-  AppAssignmentsRoute: AppAssignmentsRoute,
-  AppCalendarRoute: AppCalendarRoute,
-  AppDamageReportsRoute: AppDamageReportsRoute,
-  AppDashboardRoute: AppDashboardRoute,
-  AppDocumentsRoute: AppDocumentsRoute,
-  AppDriversRoute: AppDriversRoute,
-  AppExpensesRoute: AppExpensesRoute,
-  AppFuelRoute: AppFuelRoute,
-  AppMaintenanceRoute: AppMaintenanceRoute,
-  AppReportsRoute: AppReportsRoute,
-  AppSettingsRoute: AppSettingsRoute,
-  AppAssetsIdRoute: AppAssetsIdRoute,
-  AppAssetsIndexRoute: AppAssetsIndexRoute,
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAssignmentsRoute: AuthenticatedAssignmentsRoute,
+  AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
+  AuthenticatedDamageReportsRoute: AuthenticatedDamageReportsRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
+  AuthenticatedDriversRoute: AuthenticatedDriversRoute,
+  AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,
+  AuthenticatedFuelRoute: AuthenticatedFuelRoute,
+  AuthenticatedMaintenanceRoute: AuthenticatedMaintenanceRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedAssetsIdRoute: AuthenticatedAssetsIdRoute,
+  AuthenticatedAssetsIndexRoute: AuthenticatedAssetsIndexRoute,
 }
 
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRouteWithChildren,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useAssignments } from "@/lib/fleet-queries";
 import { HandoverDialog, ReturnAssignmentDialog } from "@/components/fleet-dialogs";
 

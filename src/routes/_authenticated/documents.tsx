@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FileText, Upload, Loader2 } from "lucide-react";
+import { FileText, Loader2 } from "lucide-react";
 import { useDocuments } from "@/lib/fleet-queries";
 import { NewDocumentDialog } from "@/components/fleet-dialogs";
 

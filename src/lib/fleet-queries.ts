@@ -175,3 +175,108 @@ export function useDocuments() {
     },
   });
 }
+
+/* ---------- MUTATION HELPERS ---------- */
+function useCompanyMutation<TVars>(
+  table: "maintenance" | "fuel_logs" | "expenses" | "damage_reports" | "documents" | "assignments",
+  keys: string[],
+  withCreatedBy = false,
+) {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async (payload: TVars) => {
+      if (!cid) throw new Error("No workspace selected");
+      const extra: Record<string, unknown> = { company_id: cid };
+      if (withCreatedBy) {
+        const { data: u } = await supabase.auth.getUser();
+        extra.created_by = u.user?.id;
+      }
+      const { data, error } = await supabase
+        .from(table)
+        .insert({ ...(payload as object), ...extra } as never)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => keys.forEach((k) => qc.invalidateQueries({ queryKey: [k, cid] })),
+  });
+}
+
+export type MaintenanceInput = {
+  asset_id: string; type: "scheduled" | "repair" | "inspection";
+  status?: "scheduled" | "in_progress" | "completed" | "cancelled";
+  scheduled_date?: string | null; completed_date?: string | null;
+  cost?: number | null; odometer?: number | null; vendor?: string | null; description?: string | null;
+};
+export const useCreateMaintenance = () =>
+  useCompanyMutation<MaintenanceInput>("maintenance", ["maintenance"], true);
+
+export function useUpdateMaintenance() {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async ({ id, ...patch }: { id: string } & Partial<MaintenanceInput>) => {
+      const { data, error } = await supabase.from("maintenance").update(patch as never).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["maintenance", cid] }),
+  });
+}
+
+export type FuelInput = {
+  asset_id: string; driver_id?: string | null; liters: number; cost: number;
+  odometer?: number | null; station?: string | null; logged_at?: string;
+};
+export const useCreateFuelLog = () => useCompanyMutation<FuelInput>("fuel_logs", ["fuel"]);
+
+export type ExpenseInput = {
+  category: string; amount: number; expense_date: string;
+  asset_id?: string | null; description?: string | null;
+};
+export const useCreateExpense = () => useCompanyMutation<ExpenseInput>("expenses", ["expenses"], true);
+
+export type DamageInput = {
+  asset_id: string; assignment_id?: string | null; description: string;
+  severity: "low" | "medium" | "high" | "critical"; cost?: number | null; reported_at?: string;
+};
+export const useCreateDamageReport = () => useCompanyMutation<DamageInput>("damage_reports", ["damage"]);
+
+export type DocumentInput = {
+  name: string; kind: "registration" | "insurance" | "inspection" | "license" | "other";
+  asset_id?: string | null; driver_id?: string | null; expiry_date?: string | null; storage_path?: string | null;
+};
+export const useCreateDocument = () => useCompanyMutation<DocumentInput>("documents", ["documents"], true);
+
+/* ---------- ASSIGNMENTS: handover / return ---------- */
+export type AssignmentInput = {
+  asset_id: string; driver_id: string; start_at?: string;
+  checkout_odometer?: number | null; checkout_notes?: string | null; checkout_signature_url?: string | null;
+};
+export const useCreateAssignment = () =>
+  useCompanyMutation<AssignmentInput>("assignments", ["assignments", "assets"], true);
+
+export function useReturnAssignment() {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async (vars: {
+      id: string; checkin_odometer?: number | null; checkin_notes?: string | null;
+      checkin_signature_url?: string | null;
+    }) => {
+      const { id, ...patch } = vars;
+      const { data, error } = await supabase
+        .from("assignments")
+        .update({ ...patch, status: "returned", end_at: new Date().toISOString() } as never)
+        .eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["assignments", cid] });
+      qc.invalidateQueries({ queryKey: ["assets", cid] });
+    },
+  });
+}

@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Wrench, Plus, Loader2 } from "lucide-react";
+import { Wrench, Loader2 } from "lucide-react";
 import { useMaintenance } from "@/lib/fleet-queries";
+import { LogMaintenanceDialog } from "@/components/fleet-dialogs";
 
 export const Route = createFileRoute("/_authenticated/maintenance")({
   head: () => ({ meta: [{ title: "Maintenance — FleetFlow" }] }),
@@ -18,7 +18,7 @@ function MaintPage() {
       <PageHeader
         title="Maintenance"
         subtitle="Scheduled by mileage, engine hours or date — whichever comes first."
-        actions={<Button size="sm" className="gap-1.5"><Plus className="h-4 w-4" />Log service</Button>}
+        actions={<LogMaintenanceDialog />}
       />
       <PageBody>
         {isLoading ? (

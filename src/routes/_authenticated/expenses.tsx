@@ -3,6 +3,7 @@ import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { Receipt, Loader2 } from "lucide-react";
 import { useExpenses } from "@/lib/fleet-queries";
+import { NewExpenseDialog } from "@/components/fleet-dialogs";
 
 export const Route = createFileRoute("/_authenticated/expenses")({
   head: () => ({ meta: [{ title: "Expenses — FleetFlow" }] }),
@@ -15,7 +16,7 @@ function ExpensesPage() {
 
   return (
     <>
-      <PageHeader title="Expenses" subtitle="Full cost breakdown per vehicle, driver and category." />
+      <PageHeader title="Expenses" subtitle="Full cost breakdown per vehicle, driver and category." actions={<NewExpenseDialog />} />
       <PageBody>
         <div className="grid gap-3 grid-cols-2 md:grid-cols-4 mb-4">
           <Card className="p-4"><div className="text-xs text-muted-foreground">Entries</div><div className="mt-1 text-2xl font-semibold tabular-nums">{expenses.length}</div></Card>

@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Upload, Loader2 } from "lucide-react";
 import { useDocuments } from "@/lib/fleet-queries";
+import { NewDocumentDialog } from "@/components/fleet-dialogs";
 
 export const Route = createFileRoute("/_authenticated/documents")({
   head: () => ({ meta: [{ title: "Documents — FleetFlow" }] }),
@@ -17,7 +18,7 @@ function DocsPage() {
       <PageHeader
         title="Documents"
         subtitle="Registration, insurance, service books, invoices and more."
-        actions={<Button size="sm" className="gap-1.5"><Upload className="h-4 w-4" />Upload</Button>}
+        actions={<NewDocumentDialog />}
       />
       <PageBody>
         {isLoading ? (
@@ -27,7 +28,7 @@ function DocsPage() {
             <Upload className="mx-auto h-8 w-8 text-muted-foreground" />
             <h3 className="mt-3 font-medium">Drag & drop to upload</h3>
             <p className="mt-1 text-sm text-muted-foreground">Registration, insurance, invoices and more — all in one place.</p>
-            <Button className="mt-4">Browse files</Button>
+            <div className="mt-4 flex justify-center"><NewDocumentDialog /></div>
           </Card>
         ) : (
           <Card className="overflow-hidden">

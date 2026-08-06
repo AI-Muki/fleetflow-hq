@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, Plus, Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { useDamageReports } from "@/lib/fleet-queries";
+import { NewDamageDialog } from "@/components/fleet-dialogs";
 
 export const Route = createFileRoute("/_authenticated/damage-reports")({
   head: () => ({ meta: [{ title: "Damage reports — FleetFlow" }] }),
@@ -20,7 +20,7 @@ function DamagePage() {
       <PageHeader
         title="Damage reports"
         subtitle={`${reports.length} reports · ${open} open`}
-        actions={<Button size="sm" className="gap-1.5"><Plus className="h-4 w-4" />New report</Button>}
+        actions={<NewDamageDialog />}
       />
       <PageBody>
         {isLoading ? (

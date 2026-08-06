@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
-import { Fuel, Plus, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Fuel, Loader2 } from "lucide-react";
 import { useFuelLogs } from "@/lib/fleet-queries";
+import { LogFuelDialog } from "@/components/fleet-dialogs";
 
 export const Route = createFileRoute("/_authenticated/fuel")({
   head: () => ({ meta: [{ title: "Fuel — FleetFlow" }] }),
@@ -19,7 +19,7 @@ function FuelPage() {
       <PageHeader
         title="Fuel management"
         subtitle="Consumption, cost per kilometer, and monthly trends."
-        actions={<Button size="sm" className="gap-1.5"><Plus className="h-4 w-4" />Log fuel</Button>}
+        actions={<LogFuelDialog />}
       />
       <PageBody>
         <div className="grid gap-3 grid-cols-2 md:grid-cols-4 mb-4">

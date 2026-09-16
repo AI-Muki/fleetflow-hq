@@ -12,7 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
 import {
   useAssets, useMaintenance, useAssignments, useDamageReports, useDocuments, useExpenses,
+  useDrivers, useFuelLogs,
 } from "@/lib/fleet-queries";
+import { buildExpirations, eur, monthlySpend as monthlySpendSeries } from "@/lib/fleet-analytics";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -33,6 +36,8 @@ function Dashboard() {
   const { data: damage = [] } = useDamageReports();
   const { data: docs = [] } = useDocuments();
   const { data: expenses = [] } = useExpenses();
+  const { data: drivers = [] } = useDrivers();
+  const { data: fuelLogs = [] } = useFuelLogs();
 
   const kpis = useMemo(() => {
     const active = assets.filter((a: any) => a.status === "active").length;

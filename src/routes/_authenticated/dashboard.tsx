@@ -108,10 +108,38 @@ function Dashboard() {
           <KpiCard label="Monthly spend" value={`€${kpis.monthlySpend.toFixed(0)}`} icon={Receipt} />
         </div>
 
+        <Card className="mt-4 p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold">Spend trend</h3>
+              <p className="text-xs text-muted-foreground">Fuel, service and other costs · last 6 months</p>
+            </div>
+            <Link to="/reports" className="text-xs text-primary hover:underline">Full reports</Link>
+          </div>
+          <div className="mt-4 h-[220px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={trend}>
+                <defs>
+                  <linearGradient id="dash-total" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary, 217 91% 60%))" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="hsl(var(--primary, 217 91% 60%))" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border, 0 0% 90%))" vertical={false} />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} />
+                <YAxis tickLine={false} axisLine={false} fontSize={12} width={48} />
+                <Tooltip formatter={(v: any) => eur(Number(v))} />
+                <Area type="monotone" dataKey="total" stroke="hsl(var(--primary, 217 91% 60%))" strokeWidth={2} fill="url(#dash-total)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+
         <div className="mt-4 grid gap-3 lg:grid-cols-2">
           <TodaysTasks tasks={todaysTasks} />
           <RecentActivityCard assets={assets} assignments={assignments} />
         </div>
+
       </PageBody>
     </>
   );

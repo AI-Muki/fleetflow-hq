@@ -47,30 +47,35 @@ function Dashboard() {
       const dt = new Date(d.expiry_date);
       return dt >= now && dt <= in30;
     }).length;
-    const monthlySpend = expenses
-      .filter((e: any) => e.expense_date && new Date(e.expense_date).getMonth() === now.getMonth())
-      .reduce((s: number, e: any) => s + Number(e.amount ?? 0), 0);
+    const sameMonth = (raw: string | null | undefined) => {
+      if (!raw) return false;
+      const d = new Date(raw);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    };
+    const monthlySpend =
+      expenses.filter((e: any) => sameMonth(e.expense_date)).reduce((s: number, e: any) => s + Number(e.amount ?? 0), 0) +
+      fuelLogs.filter((l: any) => sameMonth(l.logged_at)).reduce((s: number, l: any) => s + Number(l.cost ?? 0), 0) +
+      maintenance.filter((m: any) => sameMonth(m.completed_date ?? m.scheduled_date)).reduce((s: number, m: any) => s + Number(m.cost ?? 0), 0);
     return { total: assets.length, active, inService, outOfService, activeAssignments, openDamage, upcomingDocs, monthlySpend };
-  }, [assets, assignments, damage, docs, expenses]);
+  }, [assets, assignments, damage, docs, expenses, fuelLogs, maintenance]);
+
+  const trend = useMemo(
+    () => monthlySpendSeries(fuelLogs, maintenance, expenses, 6),
+    [fuelLogs, maintenance, expenses],
+  );
 
   const todaysTasks = useMemo(() => {
-    const now = new Date();
-    const in7 = new Date(now.getTime() + 7 * 86400000);
-    const tasks: { text: string; severity: "danger" | "warning" | "info" }[] = [];
-    for (const m of maintenance) {
-      if (m.status === "completed" || !m.scheduled_date) continue;
-      const dt = new Date(m.scheduled_date);
-      if (dt < now) tasks.push({ text: `Overdue: ${(m as any).type ?? "service"} on ${m.asset?.name ?? "vehicle"}`, severity: "danger" });
-      else if (dt <= in7) tasks.push({ text: `Upcoming service: ${m.asset?.name ?? "vehicle"} on ${m.scheduled_date}`, severity: "warning" });
-    }
-    for (const d of docs) {
-      if (!d.expiry_date) continue;
-      const dt = new Date(d.expiry_date);
-      if (dt < now) tasks.push({ text: `Expired: ${d.name ?? d.kind} on ${d.asset?.name ?? d.driver?.full_name ?? "record"}`, severity: "danger" });
-      else if (dt <= in7) tasks.push({ text: `Expiring soon: ${d.name ?? d.kind} (${d.expiry_date})`, severity: "warning" });
-    }
-    return tasks.slice(0, 6);
-  }, [maintenance, docs]);
+    const items = buildExpirations(docs, drivers, maintenance, 7);
+    return items.slice(0, 6).map((i) => ({
+      text:
+        i.days < 0
+          ? `Overdue: ${i.label} — ${i.target} (${Math.abs(i.days)}d late)`
+          : i.days === 0
+            ? `Due today: ${i.label} — ${i.target}`
+            : `In ${i.days}d: ${i.label} — ${i.target}`,
+      severity: (i.days < 0 ? "danger" : i.days <= 3 ? "warning" : "info") as "danger" | "warning" | "info",
+    }));
+  }, [maintenance, docs, drivers]);
 
   const displayName = (user?.user_metadata as { full_name?: string } | undefined)?.full_name ?? user?.email?.split("@")[0] ?? "there";
 

@@ -12,7 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
 import {
   useAssets, useMaintenance, useAssignments, useDamageReports, useDocuments, useExpenses,
+  useDrivers, useFuelLogs,
 } from "@/lib/fleet-queries";
+import { buildExpirations, eur, monthlySpend as monthlySpendSeries } from "@/lib/fleet-analytics";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -33,6 +36,8 @@ function Dashboard() {
   const { data: damage = [] } = useDamageReports();
   const { data: docs = [] } = useDocuments();
   const { data: expenses = [] } = useExpenses();
+  const { data: drivers = [] } = useDrivers();
+  const { data: fuelLogs = [] } = useFuelLogs();
 
   const kpis = useMemo(() => {
     const active = assets.filter((a: any) => a.status === "active").length;
@@ -47,30 +52,35 @@ function Dashboard() {
       const dt = new Date(d.expiry_date);
       return dt >= now && dt <= in30;
     }).length;
-    const monthlySpend = expenses
-      .filter((e: any) => e.expense_date && new Date(e.expense_date).getMonth() === now.getMonth())
-      .reduce((s: number, e: any) => s + Number(e.amount ?? 0), 0);
+    const sameMonth = (raw: string | null | undefined) => {
+      if (!raw) return false;
+      const d = new Date(raw);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    };
+    const monthlySpend =
+      expenses.filter((e: any) => sameMonth(e.expense_date)).reduce((s: number, e: any) => s + Number(e.amount ?? 0), 0) +
+      fuelLogs.filter((l: any) => sameMonth(l.logged_at)).reduce((s: number, l: any) => s + Number(l.cost ?? 0), 0) +
+      maintenance.filter((m: any) => sameMonth(m.completed_date ?? m.scheduled_date)).reduce((s: number, m: any) => s + Number(m.cost ?? 0), 0);
     return { total: assets.length, active, inService, outOfService, activeAssignments, openDamage, upcomingDocs, monthlySpend };
-  }, [assets, assignments, damage, docs, expenses]);
+  }, [assets, assignments, damage, docs, expenses, fuelLogs, maintenance]);
+
+  const trend = useMemo(
+    () => monthlySpendSeries(fuelLogs, maintenance, expenses, 6),
+    [fuelLogs, maintenance, expenses],
+  );
 
   const todaysTasks = useMemo(() => {
-    const now = new Date();
-    const in7 = new Date(now.getTime() + 7 * 86400000);
-    const tasks: { text: string; severity: "danger" | "warning" | "info" }[] = [];
-    for (const m of maintenance) {
-      if (m.status === "completed" || !m.scheduled_date) continue;
-      const dt = new Date(m.scheduled_date);
-      if (dt < now) tasks.push({ text: `Overdue: ${(m as any).type ?? "service"} on ${m.asset?.name ?? "vehicle"}`, severity: "danger" });
-      else if (dt <= in7) tasks.push({ text: `Upcoming service: ${m.asset?.name ?? "vehicle"} on ${m.scheduled_date}`, severity: "warning" });
-    }
-    for (const d of docs) {
-      if (!d.expiry_date) continue;
-      const dt = new Date(d.expiry_date);
-      if (dt < now) tasks.push({ text: `Expired: ${d.name ?? d.kind} on ${d.asset?.name ?? d.driver?.full_name ?? "record"}`, severity: "danger" });
-      else if (dt <= in7) tasks.push({ text: `Expiring soon: ${d.name ?? d.kind} (${d.expiry_date})`, severity: "warning" });
-    }
-    return tasks.slice(0, 6);
-  }, [maintenance, docs]);
+    const items = buildExpirations(docs, drivers, maintenance, 7);
+    return items.slice(0, 6).map((i) => ({
+      text:
+        i.days < 0
+          ? `Overdue: ${i.label} — ${i.target} (${Math.abs(i.days)}d late)`
+          : i.days === 0
+            ? `Due today: ${i.label} — ${i.target}`
+            : `In ${i.days}d: ${i.label} — ${i.target}`,
+      severity: (i.days < 0 ? "danger" : i.days <= 3 ? "warning" : "info") as "danger" | "warning" | "info",
+    }));
+  }, [maintenance, docs, drivers]);
 
   const displayName = (user?.user_metadata as { full_name?: string } | undefined)?.full_name ?? user?.email?.split("@")[0] ?? "there";
 
@@ -98,10 +108,38 @@ function Dashboard() {
           <KpiCard label="Monthly spend" value={`€${kpis.monthlySpend.toFixed(0)}`} icon={Receipt} />
         </div>
 
+        <Card className="mt-4 p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold">Spend trend</h3>
+              <p className="text-xs text-muted-foreground">Fuel, service and other costs · last 6 months</p>
+            </div>
+            <Link to="/reports" className="text-xs text-primary hover:underline">Full reports</Link>
+          </div>
+          <div className="mt-4 h-[220px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={trend}>
+                <defs>
+                  <linearGradient id="dash-total" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary, 217 91% 60%))" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="hsl(var(--primary, 217 91% 60%))" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border, 0 0% 90%))" vertical={false} />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} />
+                <YAxis tickLine={false} axisLine={false} fontSize={12} width={48} />
+                <Tooltip formatter={(v: any) => eur(Number(v))} />
+                <Area type="monotone" dataKey="total" stroke="hsl(var(--primary, 217 91% 60%))" strokeWidth={2} fill="url(#dash-total)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+
         <div className="mt-4 grid gap-3 lg:grid-cols-2">
           <TodaysTasks tasks={todaysTasks} />
           <RecentActivityCard assets={assets} assignments={assignments} />
         </div>
+
       </PageBody>
     </>
   );

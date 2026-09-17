@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Fuel, Loader2 } from "lucide-react";
 import { useFuelLogs } from "@/lib/fleet-queries";
 import { LogFuelDialog } from "@/components/fleet-dialogs";
+import { consumptionByAsset } from "@/lib/fleet-analytics";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/fuel")({
   head: () => ({ meta: [{ title: "Fuel — FleetFlow" }] }),
@@ -12,8 +14,9 @@ export const Route = createFileRoute("/_authenticated/fuel")({
 
 function FuelPage() {
   const { data: logs = [], isLoading } = useFuelLogs();
-  const totalCost = logs.reduce((s: number, l: any) => s + Number(l.total_cost ?? 0), 0);
+  const totalCost = logs.reduce((s: number, l: any) => s + Number(l.cost ?? 0), 0);
   const totalLiters = logs.reduce((s: number, l: any) => s + Number(l.liters ?? 0), 0);
+  const consumption = useMemo(() => consumptionByAsset(logs), [logs]);
   return (
     <>
       <PageHeader
@@ -28,6 +31,42 @@ function FuelPage() {
           <Card className="p-4"><div className="text-xs text-muted-foreground">Total cost</div><div className="mt-1 text-2xl font-semibold tabular-nums">€{totalCost.toFixed(0)}</div></Card>
           <Card className="p-4"><div className="text-xs text-muted-foreground">Avg. €/L</div><div className="mt-1 text-2xl font-semibold tabular-nums">{totalLiters ? `€${(totalCost / totalLiters).toFixed(2)}` : "—"}</div></Card>
         </div>
+        {consumption.length > 0 && (
+          <Card className="mb-4 overflow-hidden">
+            <div className="px-4 py-3 border-b">
+              <h3 className="text-sm font-semibold">Consumption per vehicle</h3>
+              <p className="text-xs text-muted-foreground">Distance is taken from the odometer span between fill-ups — a vehicle needs at least two readings.</p>
+            </div>
+            <table className="w-full text-sm">
+              <thead className="bg-muted/40 text-xs uppercase text-muted-foreground">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium">Vehicle</th>
+                  <th className="text-right px-4 py-3 font-medium">Fills</th>
+                  <th className="text-right px-4 py-3 font-medium">Liters</th>
+                  <th className="text-right px-4 py-3 font-medium">Distance</th>
+                  <th className="text-right px-4 py-3 font-medium">L/100km</th>
+                  <th className="text-right px-4 py-3 font-medium">€/km</th>
+                  <th className="text-right px-4 py-3 font-medium">€/L</th>
+                  <th className="text-right px-4 py-3 font-medium">Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                {consumption.map((c) => (
+                  <tr key={c.assetId} className="border-b last:border-0 hover:bg-muted/30">
+                    <td className="px-4 py-3">{c.name}{c.plate ? ` · ${c.plate}` : ""}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.fills}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.liters.toFixed(0)}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.km ? `${c.km.toLocaleString()} km` : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.litersPer100 ? c.litersPer100.toFixed(1) : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.costPerKm ? `€${c.costPerKm.toFixed(2)}` : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{c.pricePerLiter ? `€${c.pricePerLiter.toFixed(2)}` : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">€{c.cost.toFixed(0)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
         {isLoading ? (
           <div className="py-16 text-center text-muted-foreground"><Loader2 className="h-4 w-4 inline animate-spin mr-2" />Loading…</div>
         ) : logs.length === 0 ? (
@@ -55,7 +94,7 @@ function FuelPage() {
                     <td className="px-4 py-3">{l.asset?.name} · {l.asset?.plate}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{(l.odometer ?? 0).toLocaleString()} km</td>
                     <td className="px-4 py-3 text-right tabular-nums">{l.liters ?? "—"}</td>
-                    <td className="px-4 py-3 text-right tabular-nums">{l.total_cost ? `€${Number(l.total_cost).toFixed(2)}` : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{l.cost ? `€${Number(l.cost).toFixed(2)}` : "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">{l.station ?? "—"}</td>
                   </tr>
                 ))}

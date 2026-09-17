@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Fuel, Loader2 } from "lucide-react";
 import { useFuelLogs } from "@/lib/fleet-queries";
 import { LogFuelDialog } from "@/components/fleet-dialogs";
+import { consumptionByAsset } from "@/lib/fleet-analytics";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/fuel")({
   head: () => ({ meta: [{ title: "Fuel — FleetFlow" }] }),

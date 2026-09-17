@@ -29,7 +29,7 @@ const groups: { label: string; items: { title: string; url: string; icon: any; b
     label: "Operations",
     items: [
       { title: "Maintenance", url: "/maintenance", icon: Wrench },
-      { title: "Damage Reports", url: "/damage-reports", icon: AlertTriangle, badge: "4" },
+      { title: "Damage Reports", url: "/damage-reports", icon: AlertTriangle },
       { title: "Fuel", url: "/fuel", icon: Fuel },
       { title: "Expenses", url: "/expenses", icon: Receipt },
       { title: "Documents", url: "/documents", icon: FileText },

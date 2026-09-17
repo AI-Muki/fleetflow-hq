@@ -14,8 +14,9 @@ export const Route = createFileRoute("/_authenticated/fuel")({
 
 function FuelPage() {
   const { data: logs = [], isLoading } = useFuelLogs();
-  const totalCost = logs.reduce((s: number, l: any) => s + Number(l.total_cost ?? 0), 0);
+  const totalCost = logs.reduce((s: number, l: any) => s + Number(l.cost ?? 0), 0);
   const totalLiters = logs.reduce((s: number, l: any) => s + Number(l.liters ?? 0), 0);
+  const consumption = useMemo(() => consumptionByAsset(logs), [logs]);
   return (
     <>
       <PageHeader

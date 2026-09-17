@@ -58,7 +58,7 @@ function FuelPage() {
                     <td className="px-4 py-3">{l.asset?.name} · {l.asset?.plate}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{(l.odometer ?? 0).toLocaleString()} km</td>
                     <td className="px-4 py-3 text-right tabular-nums">{l.liters ?? "—"}</td>
-                    <td className="px-4 py-3 text-right tabular-nums">{l.total_cost ? `€${Number(l.total_cost).toFixed(2)}` : "—"}</td>
+                    <td className="px-4 py-3 text-right tabular-nums">{l.cost ? `€${Number(l.cost).toFixed(2)}` : "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">{l.station ?? "—"}</td>
                   </tr>
                 ))}

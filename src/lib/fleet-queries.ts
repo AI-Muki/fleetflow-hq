@@ -49,6 +49,28 @@ export function useCreateAsset() {
   });
 }
 
+export type AssetPatch = {
+  name?: string; plate?: string | null; vin?: string | null; make?: string | null; model?: string | null;
+  year?: number | null; vehicle_type?: string | null; fuel_type?: string | null;
+  odometer?: number | null; status?: "active" | "in_maintenance" | "retired" | "unavailable"; notes?: string | null;
+};
+
+export function useUpdateAsset() {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async ({ id, ...patch }: { id: string } & AssetPatch) => {
+      const { data, error } = await supabase.from("assets").update(patch as never).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_d, v) => {
+      qc.invalidateQueries({ queryKey: ["assets", cid] });
+      qc.invalidateQueries({ queryKey: ["asset", v.id] });
+    },
+  });
+}
+
 /* ---------- DRIVERS ---------- */
 export function useDrivers() {
   const cid = useCurrentCompanyId();

@@ -272,6 +272,54 @@ export type DocumentInput = {
 };
 export const useCreateDocument = () => useCompanyMutation<DocumentInput>("documents", ["documents"], true);
 
+/* ---------- DRIVER UPDATE ---------- */
+export type DriverPatch = {
+  full_name?: string; email?: string | null; phone?: string | null;
+  license_number?: string | null; license_expiry?: string | null;
+  status?: "active" | "suspended" | "inactive"; notes?: string | null;
+};
+
+export function useUpdateDriver() {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async ({ id, ...patch }: { id: string } & DriverPatch) => {
+      const { data, error } = await supabase.from("drivers").update(patch as never).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["drivers", cid] }),
+  });
+}
+
+/* ---------- GENERIC DELETE ---------- */
+export type DeletableTable =
+  | "assets" | "drivers" | "maintenance" | "fuel_logs" | "expenses" | "damage_reports" | "documents" | "assignments";
+
+const TABLE_KEYS: Record<DeletableTable, string[]> = {
+  assets: ["assets"],
+  drivers: ["drivers"],
+  maintenance: ["maintenance"],
+  fuel_logs: ["fuel"],
+  expenses: ["expenses"],
+  damage_reports: ["damage"],
+  documents: ["documents"],
+  assignments: ["assignments", "assets"],
+};
+
+export function useDeleteRow(table: DeletableTable) {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from(table).delete().eq("id", id);
+      if (error) throw error;
+      return id;
+    },
+    onSuccess: () => TABLE_KEYS[table].forEach((k) => qc.invalidateQueries({ queryKey: [k, cid] })),
+  });
+}
+
 /* ---------- ASSIGNMENTS: handover / return ---------- */
 export type AssignmentInput = {
   asset_id: string; driver_id: string; start_at?: string;

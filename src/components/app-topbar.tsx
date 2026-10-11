@@ -1,6 +1,6 @@
-import { Bell, Moon, Search, Sun, Plus, Check } from "lucide-react";
+import { GlobalSearch } from "@/components/global-search";
+import { Bell, Moon, Sun, Plus, Check } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useTheme } from "@/hooks/use-theme";
@@ -34,14 +34,7 @@ export function AppTopbar() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b bg-background/80 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <SidebarTrigger />
-      <div className="relative ml-1 flex-1 max-w-xl">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search plate, VIN, driver, invoice…"
-          className="h-9 pl-9 pr-16 bg-muted/40 border-muted-foreground/10 focus-visible:bg-background"
-        />
-        <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden items-center gap-1 rounded border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline-flex">⌘K</kbd>
-      </div>
+      <div className="flex-1"><GlobalSearch /></div>
 
       <div className="ml-auto flex items-center gap-1.5">
         <Button size="sm" className="hidden md:inline-flex gap-1.5">

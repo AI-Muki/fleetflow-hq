@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -50,7 +51,7 @@ function AssignmentsPage() {
                     <td className="px-4 py-3">{a.start_at ? new Date(a.start_at).toLocaleDateString() : "—"}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{(a.start_odometer ?? 0).toLocaleString()} km</td>
                     <td className="px-4 py-3"><Badge variant="outline">{a.status}</Badge></td>
-                    <td className="px-4 py-3 text-right">{a.status === "active" ? (<ReturnAssignmentDialog assignmentId={a.id} label={`${a.asset?.name ?? ""} → ${a.driver?.full_name ?? ""}`} />) : null}</td>
+                    <td className="px-4 py-3 text-right">{a.status === "active" ? (<ReturnAssignmentDialog assignmentId={a.id} label={`${a.asset?.name ?? ""} → ${a.driver?.full_name ?? ""}`} />) : null}<DeleteButton table="assignments" id={a.id} label="assignment" /></td>
                   </tr>
                 ))}
               </tbody>

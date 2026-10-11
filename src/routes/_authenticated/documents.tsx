@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -38,6 +39,7 @@ function DocsPage() {
                   <th className="text-left px-4 py-3 font-medium">Category</th>
                   <th className="text-left px-4 py-3 font-medium">Linked to</th>
                   <th className="text-left px-4 py-3 font-medium">Expiry</th>
+                  <th className="px-4 py-3 w-12"></th>
                 </tr>
               </thead>
               <tbody>
@@ -54,6 +56,7 @@ function DocsPage() {
                       {d.asset?.name ? `${d.asset.name}` : d.driver?.full_name ?? "—"}
                     </td>
                     <td className="px-4 py-3 tabular-nums">{d.expiry_date ?? "—"}</td>
+                    <td className="px-2 py-3 text-right"><DeleteButton table="documents" id={d.id} label="document" /></td>
                   </tr>
                 ))}
               </tbody>

@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageBody, PageHeader } from "@/components/page-shell";
@@ -90,11 +91,12 @@ function AssetsPage() {
                   <th className="text-left font-medium px-4 py-3">Status</th>
                   <th className="text-right font-medium px-4 py-3">Odometer</th>
                   <th className="text-left font-medium px-4 py-3">Fuel</th>
+                  <th className="px-4 py-3 w-12"></th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading && (
-                  <tr><td colSpan={6} className="px-4 py-16 text-center text-muted-foreground">
+                  <tr><td colSpan={7} className="px-4 py-16 text-center text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin inline mr-2" /> Loading…
                   </td></tr>
                 )}
@@ -120,6 +122,7 @@ function AssetsPage() {
                       <td className="px-4 py-3"><Badge variant="outline" className={s.className}>{s.label}</Badge></td>
                       <td className="px-4 py-3 text-right tabular-nums">{(a.odometer ?? 0).toLocaleString()} km</td>
                       <td className="px-4 py-3 text-muted-foreground capitalize">{a.fuel_type ?? "—"}</td>
+                      <td className="px-2 py-3 text-right"><DeleteButton table="assets" id={a.id} label="vehicle" /></td>
                     </tr>
                   );
                 })}

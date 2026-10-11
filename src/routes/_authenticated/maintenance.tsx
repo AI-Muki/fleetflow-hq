@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -37,6 +38,7 @@ function MaintPage() {
                   <th className="text-left px-4 py-3 font-medium">Scheduled</th>
                   <th className="text-left px-4 py-3 font-medium">Status</th>
                   <th className="text-right px-4 py-3 font-medium">Cost</th>
+                  <th className="px-4 py-3 w-12"></th>
                 </tr>
               </thead>
               <tbody>
@@ -52,6 +54,7 @@ function MaintPage() {
                     <td className="px-4 py-3 tabular-nums">{j.scheduled_date ?? "—"}</td>
                     <td className="px-4 py-3"><Badge variant="outline">{j.status ?? "scheduled"}</Badge></td>
                     <td className="px-4 py-3 text-right tabular-nums">{j.cost ? `€${Number(j.cost).toLocaleString()}` : "—"}</td>
+                    <td className="px-2 py-3 text-right"><DeleteButton table="maintenance" id={j.id} label="service record" /></td>
                   </tr>
                 ))}
               </tbody>

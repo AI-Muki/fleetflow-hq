@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -85,6 +86,7 @@ function FuelPage() {
                   <th className="text-right px-4 py-3 font-medium">Liters</th>
                   <th className="text-right px-4 py-3 font-medium">Cost</th>
                   <th className="text-left px-4 py-3 font-medium">Station</th>
+                  <th className="px-4 py-3 w-12"></th>
                 </tr>
               </thead>
               <tbody>
@@ -96,6 +98,7 @@ function FuelPage() {
                     <td className="px-4 py-3 text-right tabular-nums">{l.liters ?? "—"}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{l.cost ? `€${Number(l.cost).toFixed(2)}` : "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">{l.station ?? "—"}</td>
+                    <td className="px-2 py-3 text-right"><DeleteButton table="fuel_logs" id={l.id} label="fuel log" /></td>
                   </tr>
                 ))}
               </tbody>

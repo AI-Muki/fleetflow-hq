@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -38,6 +39,7 @@ function ExpensesPage() {
                   <th className="text-left px-4 py-3 font-medium">Category</th>
                   <th className="text-left px-4 py-3 font-medium">Description</th>
                   <th className="text-right px-4 py-3 font-medium">Amount</th>
+                  <th className="px-4 py-3 w-12"></th>
                 </tr>
               </thead>
               <tbody>
@@ -47,6 +49,7 @@ function ExpensesPage() {
                     <td className="px-4 py-3">{e.category ?? "—"}</td>
                     <td className="px-4 py-3 text-muted-foreground">{e.description ?? "—"}</td>
                     <td className="px-4 py-3 text-right tabular-nums">€{Number(e.amount ?? 0).toFixed(2)}</td>
+                    <td className="px-2 py-3 text-right"><DeleteButton table="expenses" id={e.id} label="expense" /></td>
                   </tr>
                 ))}
               </tbody>

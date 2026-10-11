@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
@@ -41,7 +42,7 @@ function DamagePage() {
                     </div>
                     <span className="font-mono text-xs">{d.id.slice(0, 8)}</span>
                   </div>
-                  <Badge variant="outline">{d.status ?? "open"}</Badge>
+                  <div className="flex items-center gap-1"><Badge variant="outline">{d.status ?? "open"}</Badge><DeleteButton table="damage_reports" id={d.id} label="damage report" /></div>
                 </div>
                 <h3 className="mt-4 text-sm font-semibold">{d.asset?.name} · {d.asset?.plate}</h3>
                 <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{d.description ?? "—"}</p>

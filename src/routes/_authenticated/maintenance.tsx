@@ -1,3 +1,4 @@
+import { EditMaintenanceDialog } from "@/components/edit-dialogs";
 import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageBody, PageHeader } from "@/components/page-shell";
@@ -54,7 +55,7 @@ function MaintPage() {
                     <td className="px-4 py-3 tabular-nums">{j.scheduled_date ?? "—"}</td>
                     <td className="px-4 py-3"><Badge variant="outline">{j.status ?? "scheduled"}</Badge></td>
                     <td className="px-4 py-3 text-right tabular-nums">{j.cost ? `€${Number(j.cost).toLocaleString()}` : "—"}</td>
-                    <td className="px-2 py-3 text-right"><DeleteButton table="maintenance" id={j.id} label="service record" /></td>
+                    <td className="px-2 py-3 text-right whitespace-nowrap"><EditMaintenanceDialog job={j} /><DeleteButton table="maintenance" id={j.id} label="service record" /></td>
                   </tr>
                 ))}
               </tbody>

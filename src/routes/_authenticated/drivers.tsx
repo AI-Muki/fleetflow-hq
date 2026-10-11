@@ -65,6 +65,7 @@ function DriversPage() {
                         : d.status === "suspended" ? "bg-warning/10 text-warning-foreground border-warning/30"
                         : "bg-muted"
                       }>{d.status}</Badge>
+                      <div className="ml-auto"><DeleteButton table="drivers" id={d.id} label="driver" /></div>
                     </div>
                     <div className="mt-3 space-y-1.5 text-xs">
                       {d.phone && <div className="flex items-center gap-2 text-muted-foreground"><Phone className="h-3 w-3" />{d.phone}</div>}

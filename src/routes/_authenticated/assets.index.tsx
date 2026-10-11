@@ -1,3 +1,4 @@
+import { EditAssetDialog } from "@/components/edit-dialogs";
 import { DeleteButton } from "@/components/row-actions";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
@@ -122,7 +123,7 @@ function AssetsPage() {
                       <td className="px-4 py-3"><Badge variant="outline" className={s.className}>{s.label}</Badge></td>
                       <td className="px-4 py-3 text-right tabular-nums">{(a.odometer ?? 0).toLocaleString()} km</td>
                       <td className="px-4 py-3 text-muted-foreground capitalize">{a.fuel_type ?? "—"}</td>
-                      <td className="px-2 py-3 text-right"><DeleteButton table="assets" id={a.id} label="vehicle" /></td>
+                      <td className="px-2 py-3 text-right whitespace-nowrap"><EditAssetDialog asset={a} /><DeleteButton table="assets" id={a.id} label="vehicle" /></td>
                     </tr>
                   );
                 })}

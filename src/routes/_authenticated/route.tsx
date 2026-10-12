@@ -5,7 +5,22 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { AppTopbar } from "@/components/app-topbar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
-import { CompanyProvider } from "@/hooks/use-company";
+import { CompanyProvider, useCompany } from "@/hooks/use-company";
+import { useRouterState, Link } from "@tanstack/react-router";
+import { canSeePage } from "@/lib/permissions";
+
+function RoleGate() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const role = useCompany().current?.role;
+  if (canSeePage(role, pathname)) return <Outlet />;
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
+      <h2 className="text-lg font-semibold">No access</h2>
+      <p className="text-sm text-muted-foreground">Your role in this workspace can't open this page.</p>
+      <Link to="/dashboard" className="text-sm text-primary underline">Back to dashboard</Link>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -27,7 +42,7 @@ function AppLayout() {
             <SidebarInset className="flex min-w-0 flex-1 flex-col">
               <AppTopbar />
               <main className="flex-1 min-w-0">
-                <Outlet />
+                <RoleGate />
               </main>
             </SidebarInset>
           </div>

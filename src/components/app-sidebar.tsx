@@ -9,7 +9,10 @@ import {
   SidebarMenuItem, useSidebar,
 } from "@/components/ui/sidebar";
 
-const groups: { label: string; items: { title: string; url: string; icon: any; badge?: string }[] }[] = [
+import { useCompany } from "@/hooks/use-company";
+import { canSeePage } from "@/lib/permissions";
+
+const allGroups: { label: string; items: { title: string; url: string; icon: any; badge?: string }[] }[] = [
   {
     label: "Overview",
     items: [
@@ -48,6 +51,10 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const role = useCompany().current?.role;
+  const groups = allGroups
+    .map((g) => ({ ...g, items: g.items.filter((i) => canSeePage(role, i.url)) }))
+    .filter((g) => g.items.length);
 
   return (
     <Sidebar collapsible="icon" className="border-r">

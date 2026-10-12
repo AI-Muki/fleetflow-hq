@@ -27,6 +27,7 @@ export function CompanyProvider({ children }: { children: ReactNode }) {
     enabled: !!user,
     queryKey: ["memberships", user?.id],
     queryFn: async (): Promise<Membership[]> => {
+      await supabase.rpc("accept_my_invitations");
       const { data, error } = await supabase
         .from("company_members")
         .select("role, company:companies(id, name, logo_url)")

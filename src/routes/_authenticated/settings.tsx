@@ -5,21 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
+import { TeamSettings } from "@/components/team-settings";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({ meta: [{ title: "Settings — FleetFlow" }] }),
   component: SettingsPage,
 });
 
-const members = [
-  { n: "Ana Kovač", r: "Company Owner", e: "ana@acme.co" },
-  { n: "Peter Schmidt", r: "Fleet Manager", e: "peter@acme.co" },
-  { n: "Ivana Marković", r: "Accountant", e: "ivana@acme.co" },
-  { n: "Luigi Ferrari", r: "Mechanic", e: "luigi@acme.co" },
-];
+
 
 function SettingsPage() {
   return (

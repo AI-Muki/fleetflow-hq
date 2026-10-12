@@ -5,21 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
+import { TeamSettings } from "@/components/team-settings";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({ meta: [{ title: "Settings — FleetFlow" }] }),
   component: SettingsPage,
 });
 
-const members = [
-  { n: "Ana Kovač", r: "Company Owner", e: "ana@acme.co" },
-  { n: "Peter Schmidt", r: "Fleet Manager", e: "peter@acme.co" },
-  { n: "Ivana Marković", r: "Accountant", e: "ivana@acme.co" },
-  { n: "Luigi Ferrari", r: "Mechanic", e: "luigi@acme.co" },
-];
+
 
 function SettingsPage() {
   return (
@@ -54,25 +48,7 @@ function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="team" className="mt-4">
-            <Card className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold">Team members</h3>
-                <Button size="sm">Invite user</Button>
-              </div>
-              <div className="divide-y">
-                {members.map(m => (
-                  <div key={m.e} className="flex items-center gap-3 py-3">
-                    <Avatar><AvatarFallback className="bg-primary/10 text-primary text-xs">{m.n.split(" ").map(x=>x[0]).join("")}</AvatarFallback></Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm">{m.n}</div>
-                      <div className="text-xs text-muted-foreground">{m.e}</div>
-                    </div>
-                    <Badge variant="outline">{m.r}</Badge>
-                    <Button size="sm" variant="ghost">Manage</Button>
-                  </div>
-                ))}
-              </div>
-            </Card>
+            <TeamSettings />
           </TabsContent>
 
           <TabsContent value="notifications" className="mt-4">

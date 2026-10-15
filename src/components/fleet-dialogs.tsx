@@ -14,6 +14,8 @@ import {
   useCreateFuelLog, useCreateMaintenance, useReturnAssignment,
 } from "@/lib/fleet-queries";
 
+import { ReceiptScanButton } from "@/components/receipt-scan-button";
+
 const num = (v: string) => (v === "" ? null : Number(v));
 
 /* ---------------- Maintenance ---------------- */
@@ -92,6 +94,13 @@ export function LogFuelDialog() {
         } catch (e: any) { toast.error(e.message); }
       }}
     >
+      <ReceiptScanButton onResult={(r) => setF((p) => ({
+        ...p,
+        liters: r.liters != null ? String(r.liters) : p.liters,
+        cost: r.total != null ? String(r.total) : p.cost,
+        station: r.station ?? p.station,
+        logged_at: r.date ?? p.logged_at,
+      }))} />
       <Field label="Vehicle"><AssetSelect value={f.asset_id} onChange={(v) => set("asset_id", v)} /></Field>
       <Field label="Driver (optional)"><DriverSelect value={f.driver_id} onChange={(v) => set("driver_id", v)} /></Field>
       <Field label="Liters"><NumberInput value={f.liters} onChange={(e) => set("liters", e.target.value)} placeholder="0.00" /></Field>
@@ -131,6 +140,13 @@ export function NewExpenseDialog() {
         } catch (e: any) { toast.error(e.message); }
       }}
     >
+      <ReceiptScanButton onResult={(r) => setF((p) => ({
+        ...p,
+        amount: r.total != null ? String(r.total) : p.amount,
+        expense_date: r.date ?? p.expense_date,
+        category: r.category && (EXPENSE_CATEGORIES as readonly string[]).includes(r.category) ? r.category : p.category,
+        description: [r.station, r.description].filter(Boolean).join(" — ") || p.description,
+      }))} />
       <Field label="Category"><EnumSelect value={f.category} onChange={(v) => set("category", v)} options={EXPENSE_CATEGORIES} /></Field>
       <Field label="Amount (€)"><NumberInput value={f.amount} onChange={(e) => set("amount", e.target.value)} placeholder="0.00" /></Field>
       <Field label="Date"><Input type="date" value={f.expense_date} onChange={(e) => set("expense_date", e.target.value)} /></Field>

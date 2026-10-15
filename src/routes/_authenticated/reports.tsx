@@ -7,6 +7,7 @@ import {
 import { BarChart3, Download, Fuel, Receipt, Wrench, TrendingUp } from "lucide-react";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
+import { AiFleetSummary } from "@/components/ai-fleet-summary";
 import { Button } from "@/components/ui/button";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -168,6 +169,8 @@ function ReportsPage() {
           <Stat label="Service spend" value={eur(serviceSpend)} />
           <Stat label="Avg. cost / km" value={avgCostPerKm ? `€${avgCostPerKm.toFixed(2)}` : "—"} />
         </div>
+
+        <AiFleetSummary />
 
         {!hasData && (
           <Card className="mt-4 p-10 text-center text-muted-foreground">

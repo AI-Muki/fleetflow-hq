@@ -19,6 +19,7 @@ export function EditAssetDialog({ asset }: { asset: any }) {
     name: s(asset.name), plate: s(asset.plate), vin: s(asset.vin), make: s(asset.make), model: s(asset.model),
     year: s(asset.year), vehicle_type: s(asset.vehicle_type), fuel_type: s(asset.fuel_type),
     odometer: s(asset.odometer), status: s(asset.status) || "active", notes: s(asset.notes),
+    service_interval_km: s(asset.service_interval_km ?? 15000),
   }));
   const set = (k: string, v: string) => setF((p) => ({ ...p, [k]: v }));
   return (
@@ -31,6 +32,7 @@ export function EditAssetDialog({ asset }: { asset: any }) {
             id: asset.id, name: f.name, plate: f.plate || null, vin: f.vin || null, make: f.make || null,
             model: f.model || null, year: num(f.year), vehicle_type: f.vehicle_type || null,
             fuel_type: f.fuel_type || null, odometer: num(f.odometer), status: f.status as never, notes: f.notes || null,
+            ...(Number(f.service_interval_km) > 0 ? { service_interval_km: Number(f.service_interval_km) } : {}),
           });
           toast.success("Vehicle updated"); d.setOpen(false);
         } catch (e: any) { toast.error(e.message); }
@@ -43,6 +45,7 @@ export function EditAssetDialog({ asset }: { asset: any }) {
       <Field label="Model"><Input value={f.model} onChange={(e) => set("model", e.target.value)} /></Field>
       <Field label="Year"><NumberInput value={f.year} onChange={(e) => set("year", e.target.value)} /></Field>
       <Field label="Odometer (km)"><NumberInput value={f.odometer} onChange={(e) => set("odometer", e.target.value)} /></Field>
+      <Field label="Service every (km)"><NumberInput value={f.service_interval_km} onChange={(e) => set("service_interval_km", e.target.value)} /></Field>
       <Field label="Type"><Input value={f.vehicle_type} onChange={(e) => set("vehicle_type", e.target.value)} /></Field>
       <Field label="Fuel"><Input value={f.fuel_type} onChange={(e) => set("fuel_type", e.target.value)} /></Field>
       <div className="sm:col-span-2"><Field label="Status"><EnumSelect value={f.status} onChange={(v) => set("status", v)} options={["active", "in_maintenance", "unavailable", "retired"]} /></Field></div>

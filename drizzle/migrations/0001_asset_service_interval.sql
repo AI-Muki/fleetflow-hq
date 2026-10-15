@@ -1,0 +1,1 @@
+ALTER TABLE public.assets ADD COLUMN IF NOT EXISTS service_interval_km integer NOT NULL DEFAULT 15000 CHECK (service_interval_km > 0);

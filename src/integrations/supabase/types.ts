@@ -28,6 +28,7 @@ export type Database = {
           notes: string | null
           odometer: number
           plate: string | null
+          service_interval_km: number
           status: Database["public"]["Enums"]["asset_status"]
           updated_at: string
           vehicle_type: string | null
@@ -47,6 +48,7 @@ export type Database = {
           notes?: string | null
           odometer?: number
           plate?: string | null
+          service_interval_km?: number
           status?: Database["public"]["Enums"]["asset_status"]
           updated_at?: string
           vehicle_type?: string | null
@@ -66,6 +68,7 @@ export type Database = {
           notes?: string | null
           odometer?: number
           plate?: string | null
+          service_interval_km?: number
           status?: Database["public"]["Enums"]["asset_status"]
           updated_at?: string
           vehicle_type?: string | null

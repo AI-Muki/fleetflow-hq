@@ -53,6 +53,7 @@ export type AssetPatch = {
   name?: string; plate?: string | null; vin?: string | null; make?: string | null; model?: string | null;
   year?: number | null; vehicle_type?: string | null; fuel_type?: string | null;
   odometer?: number | null; status?: "active" | "in_maintenance" | "retired" | "unavailable"; notes?: string | null;
+  service_interval_km?: number;
 };
 
 export function useUpdateAsset() {

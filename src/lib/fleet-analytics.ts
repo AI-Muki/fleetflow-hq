@@ -248,3 +248,31 @@ export function downloadCSV(filename: string, rows: Record<string, unknown>[]) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export type ServiceDue = {
+  assetId: string; name: string; plate: string | null; odometer: number;
+  lastServiceKm: number; dueAtKm: number; remainingKm: number;
+  severity: "overdue" | "soon" | "ok"; hasOpenJob: boolean;
+};
+
+/** Mileage-based service due: last completed scheduled service odometer + interval. Soon = within 1000 km. */
+export function serviceDueByMileage(assets: any[], maintenance: any[]): ServiceDue[] {
+  return assets
+    .filter((a) => a.status !== "retired")
+    .map((a) => {
+      const jobs = maintenance.filter((m) => m.asset_id === a.id);
+      const last = jobs
+        .filter((m) => m.status === "completed" && m.type === "scheduled" && m.odometer != null)
+        .reduce((max, m) => Math.max(max, Number(m.odometer)), 0);
+      const interval = Number(a.service_interval_km ?? 15000);
+      const odometer = Number(a.odometer ?? 0);
+      const dueAtKm = last + interval;
+      const remainingKm = dueAtKm - odometer;
+      const severity: ServiceDue["severity"] = remainingKm <= 0 ? "overdue" : remainingKm <= 1000 ? "soon" : "ok";
+      return {
+        assetId: a.id, name: a.name, plate: a.plate ?? null, odometer, lastServiceKm: last, dueAtKm, remainingKm, severity,
+        hasOpenJob: jobs.some((m) => m.type === "scheduled" && (m.status === "scheduled" || m.status === "in_progress")),
+      };
+    })
+    .sort((x, y) => x.remainingKm - y.remainingKm);
+}

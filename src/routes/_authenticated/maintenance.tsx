@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Wrench, Loader2 } from "lucide-react";
 import { useMaintenance } from "@/lib/fleet-queries";
 import { LogMaintenanceDialog } from "@/components/fleet-dialogs";
+import { ServiceDueCard } from "@/components/service-due-card";
 
 export const Route = createFileRoute("/_authenticated/maintenance")({
   head: () => ({ meta: [{ title: "Maintenance — FleetFlow" }] }),
@@ -23,6 +24,7 @@ function MaintPage() {
         actions={<LogMaintenanceDialog />}
       />
       <PageBody>
+        <ServiceDueCard />
         {isLoading ? (
           <div className="py-16 text-center text-muted-foreground"><Loader2 className="h-4 w-4 inline animate-spin mr-2" />Loading…</div>
         ) : jobs.length === 0 ? (

@@ -8,6 +8,13 @@
       "when": 1791766009296,
       "tag": "0000_company_invitations",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792086935089,
+      "tag": "0001_asset_service_interval",
+      "breakpoints": true
     }
   ]
 }

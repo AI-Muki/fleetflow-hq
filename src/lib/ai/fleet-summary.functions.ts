@@ -80,7 +80,7 @@ export const getFleetSummary = createServerFn({ method: "POST" })
           content: `Here is the current fleet data as JSON:\n${JSON.stringify(digest, null, 2)}`,
         },
       ],
-      "You are a fleet management analyst. Write a concise fleet health summary in the same language as the user's app (Bosnian/Croatian/Serbian). Use short sections with bullet points: overall status, urgent items (expiring documents/licenses, open damage), cost overview for the last 30 days, and 2-3 concrete recommendations. Be direct and practical. Max 250 words.",
+      "You are a fleet management analyst. Write a concise fleet health summary in the same language as the user's app (Bosnian/Croatian/Serbian). Use short sections with bullet points: overall status, urgent items (expiring documents/licenses, open damage), cost overview for the last 30 days, and 2-3 concrete recommendations. Be direct and practical. Max 250 words. Write plain text only — no markdown symbols like #, **, or -; use short section titles followed by a colon and plain sentences.",
     );
 
     const summary = await result.text;

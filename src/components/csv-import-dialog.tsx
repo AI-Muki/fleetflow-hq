@@ -7,16 +7,16 @@ import {
 } from "@/components/ui/dialog";
 import { parseCSVObjects } from "@/lib/csv";
 
-export type CsvColumn<T> = {
+export type CsvColumn = {
   key: string;
   label: string;
   required?: boolean;
-  map: (raw: string) => Partial<T>;
+  map: (raw: string) => Record<string, unknown>;
 };
 
 type Props<T> = {
   label: string;
-  columns: CsvColumn<T>[];
+  columns: CsvColumn[];
   example: string;
   onInsert: (rows: T[]) => Promise<void>;
 };

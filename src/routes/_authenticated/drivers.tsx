@@ -13,7 +13,8 @@ import { useState } from "react";
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
-import { useDrivers, useCreateDriver } from "@/lib/fleet-queries";
+import { useDrivers, useBulkInsert, useCreateDriver } from "@/lib/fleet-queries";
+import { CsvImportDialog } from "@/components/csv-import-dialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/drivers")({
@@ -25,6 +26,7 @@ function initials(n: string) { return n.split(" ").map((x) => x[0]).slice(0, 2).
 
 function DriversPage() {
   const { data: drivers = [], isLoading } = useDrivers();
+  const bulkInsert = useBulkInsert("drivers");
   const [q, setQ] = useState("");
   const filtered = drivers.filter((d) =>
     `${d.full_name} ${d.email ?? ""} ${d.phone ?? ""} ${d.license_number ?? ""}`.toLowerCase().includes(q.toLowerCase()),
@@ -36,7 +38,23 @@ function DriversPage() {
       <PageHeader
         title="Drivers"
         subtitle={`${drivers.length} team members · ${active} active`}
-        actions={<NewDriverDialog />}
+        actions={
+          <>
+            <CsvImportDialog
+              label="drivers"
+              example={"full_name,email,phone,license_number,license_expiry\nAmir Hodžić,amir@firma.ba,+38761123456,B123456,2027-05-01"}
+              columns={[
+                { key: "full_name", label: "Name", required: true, map: (v) => ({ full_name: v }) },
+                { key: "email", label: "Email", map: (v) => ({ email: v || null }) },
+                { key: "phone", label: "Phone", map: (v) => ({ phone: v || null }) },
+                { key: "license_number", label: "License", map: (v) => ({ license_number: v || null }) },
+                { key: "license_expiry", label: "Expiry", map: (v) => ({ license_expiry: /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null }) },
+              ]}
+              onInsert={async (rows) => { await bulkInsert.mutateAsync(rows); }}
+            />
+            <NewDriverDialog />
+          </>
+        }
       />
       <PageBody>
         <Card className="p-3 mb-4">

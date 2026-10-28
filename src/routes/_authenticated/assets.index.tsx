@@ -15,7 +15,9 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { useAssets, useCreateAsset } from "@/lib/fleet-queries";
+import { useAssets, useBulkInsert, useCreateAsset } from "@/lib/fleet-queries";
+import { downloadCSV } from "@/lib/fleet-analytics";
+import { CsvImportDialog } from "@/components/csv-import-dialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/assets/")({
@@ -34,6 +36,7 @@ const statusMap: Record<string, { label: string; className: string }> = {
 
 function AssetsPage() {
   const { data: assets = [], isLoading } = useAssets();
+  const bulkInsert = useBulkInsert("assets");
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<string>("all");
 
@@ -55,7 +58,36 @@ function AssetsPage() {
         subtitle={`${filtered.length} of ${assets.length} vehicles & equipment`}
         actions={
           <>
-            <Button variant="outline" size="sm" className="gap-1.5"><Download className="h-4 w-4" />Export</Button>
+            <CsvImportDialog
+              label="vehicles"
+              example={"name,plate,make,model,year,vehicle_type,fuel_type,odometer\nVan #12,M-AB-123,Mercedes,Sprinter,2021,Van,diesel,145000"}
+              columns={[
+                { key: "name", label: "Name", required: true, map: (v) => ({ name: v }) },
+                { key: "plate", label: "Plate", map: (v) => ({ plate: v || null }) },
+                { key: "make", label: "Make", map: (v) => ({ make: v || null }) },
+                { key: "model", label: "Model", map: (v) => ({ model: v || null }) },
+                { key: "year", label: "Year", map: (v) => ({ year: v && !isNaN(Number(v)) ? Number(v) : null }) },
+                { key: "vehicle_type", label: "Type", map: (v) => ({ vehicle_type: v || null }) },
+                { key: "fuel_type", label: "Fuel", map: (v) => ({ fuel_type: v || null }) },
+                { key: "odometer", label: "Odometer", map: (v) => ({ odometer: v && !isNaN(Number(v)) ? Number(v) : 0 }) },
+              ]}
+              onInsert={async (rows) => { await bulkInsert.mutateAsync(rows); }}
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              disabled={filtered.length === 0}
+              onClick={() =>
+                downloadCSV("assets", filtered.map((a) => ({
+                  name: a.name, plate: a.plate ?? "", make: a.make ?? "", model: a.model ?? "",
+                  year: a.year ?? "", type: a.vehicle_type ?? "", fuel: a.fuel_type ?? "",
+                  status: a.status, odometer: a.odometer ?? 0,
+                })))
+              }
+            >
+              <Download className="h-4 w-4" />Export
+            </Button>
             <NewAssetDialog />
           </>
         }

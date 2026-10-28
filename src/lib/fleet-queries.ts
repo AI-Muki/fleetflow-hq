@@ -293,6 +293,26 @@ export function useUpdateDriver() {
   });
 }
 
+/* ---------- BULK IMPORT ---------- */
+export function useBulkInsert(table: "assets" | "drivers") {
+  const qc = useQueryClient();
+  const cid = useCurrentCompanyId();
+  return useMutation({
+    mutationFn: async (rows: Record<string, unknown>[]) => {
+      if (!cid) throw new Error("No workspace selected");
+      const { data: u } = await supabase.auth.getUser();
+      const payload = rows.map((r) => ({
+        ...r,
+        company_id: cid,
+        ...(table === "assets" ? { created_by: u.user?.id } : {}),
+      }));
+      const { error } = await supabase.from(table).insert(payload as never);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: [table, cid] }),
+  });
+}
+
 /* ---------- GENERIC DELETE ---------- */
 export type DeletableTable =
   | "assets" | "drivers" | "maintenance" | "fuel_logs" | "expenses" | "damage_reports" | "documents" | "assignments";

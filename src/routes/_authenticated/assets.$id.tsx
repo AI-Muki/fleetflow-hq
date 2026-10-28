@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, QrCode, Truck, Gauge, Fuel, User, Loader2 } from "lucide-react";
 import { useAsset } from "@/lib/fleet-queries";
+import { QrLabelDialog } from "@/components/qr-label-dialog";
 
 export const Route = createFileRoute("/_authenticated/assets/$id")({
   head: () => ({ meta: [{ title: `Asset — FleetFlow` }] }),
@@ -40,7 +41,7 @@ function AssetDetail() {
         actions={
           <>
             <Link to="/assets"><Button variant="ghost" size="sm" className="gap-1.5"><ArrowLeft className="h-4 w-4" />All assets</Button></Link>
-            <Button variant="outline" size="sm" className="gap-1.5"><QrCode className="h-4 w-4" />QR label</Button>
+            <QrLabelDialog asset={asset} />
             <Button size="sm">Assign driver</Button>
           </>
         }

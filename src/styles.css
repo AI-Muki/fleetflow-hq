@@ -215,3 +215,15 @@
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--color-foreground) 8%, transparent) 1px, transparent 0);
   background-size: 24px 24px;
 }
+
+@media print {
+  body {
+    background: white;
+  }
+  .recharts-wrapper svg {
+    max-width: 100%;
+  }
+  @page {
+    margin: 12mm;
+  }
+}

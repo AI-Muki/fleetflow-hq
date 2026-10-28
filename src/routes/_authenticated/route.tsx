@@ -38,9 +38,9 @@ function AppLayout() {
       <CompanyProvider>
         <SidebarProvider>
           <div className="flex min-h-screen w-full bg-background">
-            <AppSidebar />
+            <div className="print:hidden contents"><AppSidebar /></div>
             <SidebarInset className="flex min-w-0 flex-1 flex-col">
-              <AppTopbar />
+              <div className="print:hidden contents"><AppTopbar /></div>
               <main className="flex-1 min-w-0">
                 <RoleGate />
               </main>

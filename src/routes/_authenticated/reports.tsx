@@ -4,7 +4,7 @@ import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart,
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
-import { BarChart3, Download, Fuel, Receipt, Wrench, TrendingUp } from "lucide-react";
+import { BarChart3, Download, Fuel, Printer, Receipt, Wrench, TrendingUp } from "lucide-react";
 import { PageBody, PageHeader } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { AiFleetSummary } from "@/components/ai-fleet-summary";
@@ -152,14 +152,19 @@ function ReportsPage() {
         title="Reports & analytics"
         subtitle="Cost trends, consumption and exportable operational reports."
         actions={
-          <Select value={months} onValueChange={setMonths}>
-            <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="3">Last 3 months</SelectItem>
-              <SelectItem value="6">Last 6 months</SelectItem>
-              <SelectItem value="12">Last 12 months</SelectItem>
-            </SelectContent>
-          </Select>
+          <>
+            <Select value={months} onValueChange={setMonths}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">Last 3 months</SelectItem>
+                <SelectItem value="6">Last 6 months</SelectItem>
+                <SelectItem value="12">Last 12 months</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm" className="gap-1.5 print:hidden" onClick={() => window.print()}>
+              <Printer className="h-4 w-4" />Print / PDF
+            </Button>
+          </>
         }
       />
       <PageBody>
